@@ -1,91 +1,207 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a2c8d;
+            --secondary-color: #f6e6ff;
+            --accent-color: #ff9ecd;
+        }
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two&display=swap" rel="stylesheet">
-    <!-- my css file-->
-    <link rel="stylesheet" type="text/css" href="videochat2.css">
-  <script src='https://meet.jit.si/external_api.js'></script>
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(106, 44, 141, 0.2);
+        }
+
+        .navbar-brand {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2.5rem;
+            color: white !important;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .schedule-box {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(106, 44, 141, 0.15);
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .schedule-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+        }
+
+        .schedule-box h3 {
+            color: var(--primary-color);
+            font-family: 'Bubblegum Sans', cursive;
+            margin-bottom: 1.5rem;
+        }
+
+        .schedule-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .schedule-box li {
+            padding: 0.5rem 0;
+            border-bottom: 2px dashed #eee;
+            color: #666;
+        }
+
+        .meeting-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 24px rgba(106, 44, 141, 0.15);
+            margin: 2rem auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .start-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.25rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-family: 'Bubblegum Sans', cursive;
+            margin: 1rem 0;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(106, 44, 141, 0.3);
+            background: #8a3cb3;
+        }
+
+        #jitsi-container {
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .decoration {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .decoration.top-left {
+            top: 0;
+            left: 0;
+            background: url('/api/placeholder/200/200') no-repeat;
+            transform: rotate(-15deg);
+        }
+
+        .decoration.bottom-right {
+            bottom: 0;
+            right: 0;
+            background: url('/api/placeholder/200/200') no-repeat;
+            transform: rotate(15deg);
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 2rem;
+            }
+            
+            .schedule-box, .meeting-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .decoration {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="thebody text-center">
-<nav class="navbar navbar-dark" style="background-color:shd; box-shadow: 2px 4px rgba(226, 203, 242,0.5)">
-  <span class="navbar-brand" style="font-size: 40px; color:#9864bd">Video Calling</span>
-</nav>
+    <div class="decoration top-left"></div>
+    <div class="decoration bottom-right"></div>
 
+    <nav class="navbar">
+        <span class="navbar-brand">Happy Video Chat! 🌈</span>
+    </nav>
 
-<div class="container mt-4">
-    <div class="schedule-box">
-        <h3>Doctor's Schedule</h3>
-        <p>Available on:</p>
-        <ul>
-            <li>Monday: 9:00 AM - 11:00 AM</li>
-            <li>Tuesday: 10:00 AM - 12:00 PM</li>
-            <li>Wednesday: 9:30 AM - 12:30 PM</li>
-            <li>Thursday: 10:30 AM - 12:30 PM</li>
-            <li>Friday: 9:00 AM - 11:00 AM</li>
-        </ul>
+    <div class="container">
+        <div class="schedule-box">
+            <h3>When Can We Meet? 📅</h3>
+            <ul>
+                <li>Monday: 9:00 AM - 11:00 AM 🌞</li>
+                <li>Tuesday: 10:00 AM - 12:00 PM 🌟</li>
+                <li>Wednesday: 9:30 AM - 12:30 PM ⭐</li>
+                <li>Thursday: 10:30 AM - 12:30 PM 🌈</li>
+                <li>Friday: 9:00 AM - 11:00 AM 🎈</li>
+            </ul>
+        </div>
+
+        <div class="meeting-container">
+            <h2>Ready to Start? 🎉</h2>
+            <button id="start" class="start-btn">
+                Start Video Chat! 📹
+            </button>
+        </div>
+
+        <div id="jitsi-container"></div>
     </div>
 
-   
-</div>
+    <script src='https://meet.jit.si/external_api.js'></script>
+    <script>
+        var button = document.querySelector('#start');
+        var container = document.querySelector('#jitsi-container');
+        var api = null;
 
-<div class="container align-items-center " style="margin-top: 15%;">
-<div class="transbox text-center"><br><br>
+        button.addEventListener('click', () => {
+            var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var stringLength = 30;
 
-<button id="start" class="btn btn-light btn-lg" type="button"><b>Start a new meeting</b></button>
-</div>
-</div>
+            function pickRandom() {
+                return possible[Math.floor(Math.random() * possible.length)];
+            }
 
+            var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('');
 
+            var domain = "meet.jit.si";
+            var options = {
+                "roomName": randomString,
+                "parentNode": container,
+                "width": '100%',
+                "height": 600,
+            };
+            api = new JitsiMeetExternalAPI(domain, options);
+        });
+    </script>
 
-<div id="jitsi-container" class="container align-items-center">
-</div>
-
-</div>
-
-
-
-
-
-
-
-<script>
-var button = document.querySelector('#start');
-var container = document.querySelector('#jitsi-container');
-var api = null;
-
-button.addEventListener('click', () => {
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var stringLength = 30;
-
-    function pickRandom() {
-    return possible[Math.floor(Math.random() * possible.length)];
-    }
-
-var randomString = Array.apply(null, Array(stringLength)).map(pickRandom).join('');
-
-    var domain = "meet.jit.si";
-    var options = {
-        "roomName": randomString,
-        "parentNode": container,
-        "width": 600,
-        "height": 600,
-    };
-    api = new JitsiMeetExternalAPI(domain, options);
-});
-
-</script>
-<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>
